@@ -1,0 +1,33 @@
+# Gradle files
+ProdTracker/.gradle/
+ProdTracker/build/
+
+# Local configuration file (sdk path, etc)
+ProdTracker/local.properties
+
+# Log/OS Files
+ProdTracker/*.log
+
+# Android Studio generated files and folders
+ProdTracker/captures/
+ProdTracker/.externalNativeBuild/
+ProdTracker/.cxx/
+ProdTracker/*.apk
+ProdTracker/output.json
+
+# IntelliJ
+ProdTracker/*.iml
+ProdTracker/.idea/
+ProdTracker/misc.xml
+ProdTracker/deploymentTargetDropDown.xml
+ProdTracker/render.experimental.xml
+
+# Keystore files
+ProdTracker/*.jks
+ProdTracker/*.keystore
+
+# Google Services (e.g. APIs or Firebase)
+ProdTracker/google-services.json
+
+# Android Profiling
+ProdTracker/*.hprof
