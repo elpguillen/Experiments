@@ -75,7 +75,7 @@ fun MenuItem(itemName: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun HomeBodyPreview() {
-    HomeBody(menuList = listOf("Start Work", "Lunch", "End Work", "Employee Activity Tracker"), onItemClick = {})
+    HomeBody(menuList = listOf("Start Work", "Lunch", "End Work", "Employees", "Batches","Employee Activity Tracker"), onItemClick = {})
 }
 
 @Preview(showBackground = true)
