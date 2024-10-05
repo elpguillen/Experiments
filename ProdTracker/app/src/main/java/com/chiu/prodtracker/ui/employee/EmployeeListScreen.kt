@@ -8,13 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.chiu.prodtracker.ui.theme.ProdTrackerTheme
 
-/*val employeeList: List<String> = listOf(
+val employeeList: List<String> = listOf(
     "Elara Moonshadow",
     "Thaddeus Blackthorn",
     "Seraphina Starling",
@@ -44,39 +38,22 @@ import com.chiu.prodtracker.ui.theme.ProdTrackerTheme
     "Leopold Greystone",
     "Selene Moonwhisper",
     "Barnabas Ironwood"
-)*/
+)
 
 @Composable
-fun EmployeeScreen(
-    modifier: Modifier,
-    navigateToEmployeeEntry: () -> Unit,
-    ) {
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { },
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(24.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add Employee"
-                )
-            }
-        }
-    ) {
-        innerPadding ->
-        EmployeeBody(
-            employees = employeeList,
-            onItemClick = {},
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-        )
-    }
+fun EmployeeListScreen(
+
+) {
+    EmployeeBody(
+        employees = employeeList,
+        onItemClick = {},
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 36.dp, vertical = 8.dp)
+    )
 }
 
-/*@Composable
+@Composable
 fun EmployeeBody(
     employees: List<String>,
     onItemClick: (String) -> Unit,
@@ -93,9 +70,9 @@ fun EmployeeBody(
             modifier = modifier
         )
     }
-}*/
+}
 
-/*@Composable
+@Composable
 fun EmployeeList(employeeList: List<String>, onItemClick: (String) -> Unit, modifier: Modifier) {
     LazyColumn(modifier = modifier) {
         items(items = employeeList, key = {it}) { employee ->
@@ -104,9 +81,9 @@ fun EmployeeList(employeeList: List<String>, onItemClick: (String) -> Unit, modi
             )
         }
     }
-}*/
+}
 
-/*@Composable
+@Composable
 fun EmployeeItem(name: String, modifier: Modifier = Modifier) {
     Card(onClick = { }, modifier = modifier) {
         Row(
@@ -118,22 +95,12 @@ fun EmployeeItem(name: String, modifier: Modifier = Modifier) {
             Text(text = name)
         }
     }
-}*/
+}
 
 @Preview(showBackground = true)
 @Composable
-fun EmployeeScreenPreview() {
-    ProdTrackerTheme {
-        EmployeeScreen(modifier = Modifier) {
-            
-        }
-    }
-}
-
-/*@Preview(showBackground = true)
-@Composable
 fun EmployeeListPreview() {
     ProdTrackerTheme {
-        EmployeeList(employeeList = employeeList, onItemClick = {} , modifier = Modifier)
+        EmployeeListScreen()
     }
-}*/
+}
