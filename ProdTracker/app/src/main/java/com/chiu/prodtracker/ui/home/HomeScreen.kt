@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.chiu.prodtracker.ui.theme.ProdTrackerTheme
 
 
-val homeMenuList: List<String> = listOf("Start Work", "Lunch", "End Work", "Employees", "Batches","Employee Activity Tracker")
+val homeMenuList: List<String> = listOf("Work Shift", "Employees", "Batches","Employee Activity Tracker")
 
 @Composable
 fun HomeScreen(
