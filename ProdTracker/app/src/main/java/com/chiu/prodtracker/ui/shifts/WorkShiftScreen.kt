@@ -3,8 +3,10 @@ package com.chiu.prodtracker.ui.shifts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.OutlinedButton
@@ -26,14 +28,15 @@ fun WorkShiftScreen(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
-            .
     ) {
         OutlinedButton(onClick = {  }) {
             Text(text = "Start Work", modifier.width(100.dp), textAlign = TextAlign.Center)
         }
+        Spacer(modifier = Modifier.height(48.dp))
         OutlinedButton(onClick = {  }, ) {
             Text(text = "Lunch", modifier.width(100.dp), textAlign = TextAlign.Center)
         }
+        Spacer(modifier = Modifier.height(48.dp))
         OutlinedButton(onClick = {  }) {
             Text(text = "End Work", modifier.width(100.dp), textAlign = TextAlign.Center)
         }
