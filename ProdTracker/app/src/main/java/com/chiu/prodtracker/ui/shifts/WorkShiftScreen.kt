@@ -50,3 +50,16 @@ fun WorkShiftScreenPreview() {
         WorkShiftScreen(modifier = Modifier)
     }
 }
+
+
+fun onPressStartWork() {
+
+}
+
+fun onPressLunch() {
+
+}
+
+fun onPressEndWork() {
+    
+}
