@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Minesweeper</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Minesweeper</h1>
+      <div class="controls">
+        <label class="small">Rows <input id="rows" type="number" min="5" max="30" value="9" /></label>
+        <label class="small">Cols <input id="cols" type="number" min="5" max="30" value="9" /></label>
+        <label class="small">Mines <input id="mines" type="number" min="1" max="200" value="10" /></label>
+        <button id="startBtn">Start / Reset</button>
+        <button id="flagModeBtn">Flag mode: Off</button>
+      </div>
+    </header>
+
+    <div class="info" style="margin-bottom:10px">
+      <div class="badge" id="minesLeft">10</div>
+      <div class="small">Mines left</div>
+      <div style="flex:1"></div>
+      <div class="badge" id="timer">0s</div>
+      <div class="small">Time</div>
+    </div>
+
+    <div id="boardWrap">
+      <div id="board" class="board"></div>
+    </div>
+
+    <div class="footer">
+      Left click to reveal a tile. Right click to flag/unflag. On mobile use the "Flag mode" toggle to place flags. Win by revealing all non-mine tiles.
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
