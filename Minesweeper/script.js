@@ -24,3 +24,26 @@ function init() {
     // render the grid on the page
 }
 
+function placeMines(row,col) {
+
+}
+
+function render() {
+
+}
+
+function onTileClick(row, col) {
+
+}
+
+function checkWin() {
+
+}
+
+function gameOver(won) {
+
+}
+
+function startTimer() {
+    
+}
