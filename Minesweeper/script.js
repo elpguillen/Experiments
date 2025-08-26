@@ -47,3 +47,18 @@ function gameOver(won) {
 function startTimer() {
     
 }
+
+function startTimer() {
+    stopTimer(); seconds=0; updateTimer(); timer = setInterval(()=>{ seconds++; updateTimer(); },1000);
+}
+
+function stopTimer() { 
+    if(timer) clearInterval(timer); timer = null; 
+}
+function updateTimer() { 
+    timerEl.textContent = seconds + 's'; 
+}
+
+function updateMinesLeft() { 
+    minesLeftEl.textContent = Math.max(0, mines - flagsPlaced); 
+}
