@@ -36,6 +36,14 @@ function onTileClick(row, col) {
 
 }
 
+function revealAllMines() {
+    for(let r=0;r<rows;r++)
+        for(let c=0;c<cols;c++) 
+            if(grid[r][c].mine) 
+                grid[r][c].revealed = true;
+    render();
+}
+
 function checkWin() {
 
 }
