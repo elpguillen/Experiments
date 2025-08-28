@@ -49,7 +49,14 @@ function checkWin() {
 }
 
 function gameOver(won) {
-
+    stopTimer();
+    started=false;
+    
+    if(won){
+      setTimeout(()=> alert('You win! Time: '+seconds+'s'),10);
+    } else {
+      setTimeout(()=> alert('BOOM! You hit a mine.'),10);
+    }
 }
 
 function startTimer() {
