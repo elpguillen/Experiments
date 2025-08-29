@@ -45,13 +45,22 @@ function revealAllMines() {
 }
 
 function checkWin() {
-
+    let unrevealed=0;
+    for(let r=0;r<rows;r++){
+      for(let c=0;c<cols;c++){
+        const cell = grid[r][c];
+        if(!cell.revealed) unrevealed++;
+      }
+    }
+    if(unrevealed === mines){
+      gameOver(true);
+    }
 }
 
 function gameOver(won) {
     stopTimer();
     started=false;
-    
+
     if(won){
       setTimeout(()=> alert('You win! Time: '+seconds+'s'),10);
     } else {
