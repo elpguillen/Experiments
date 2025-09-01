@@ -69,11 +69,10 @@ function gameOver(won) {
 }
 
 function startTimer() {
-    
-}
-
-function startTimer() {
-    stopTimer(); seconds=0; updateTimer(); timer = setInterval(()=>{ seconds++; updateTimer(); },1000);
+    stopTimer(); 
+    seconds=0; 
+    updateTimer(); 
+    timer = setInterval(()=>{ seconds++; updateTimer(); },1000);
 }
 
 function stopTimer() { 
