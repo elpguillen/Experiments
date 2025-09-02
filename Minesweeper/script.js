@@ -29,7 +29,27 @@ function placeMines(row,col) {
 }
 
 function render() {
+    boardEl.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    boardEl.innerHTML = '';
+    for(let r=0;r<rows;r++){
+      for(let c=0;c<cols;c++){
+        const cell = grid[r][c];
+        const tile = document.createElement('div');
+        tile.className = 'tile' + (cell.revealed? ' revealed':'') + (cell.flagged? ' flagged':'');
+        tile.dataset.r = r; tile.dataset.c = c;
+        if(cell.revealed){
+          if(cell.mine){ tile.classList.add('mine'); tile.textContent = '💣'; }
+          else if(cell.adj>0){ tile.textContent = cell.adj; tile.style.color = colorForNumber(cell.adj); }
+        } else if(cell.flagged){ tile.textContent = '⚑'; }
 
+        tile.addEventListener('click', (e)=>{
+          e.preventDefault(); onTileClick(r,c);
+        });
+        tile.addEventListener('contextmenu', (e)=>{ e.preventDefault(); onTileRightClick(r,c); });
+
+        boardEl.appendChild(tile);
+      }
+    }
 }
 
 function onTileClick(row, col) {
