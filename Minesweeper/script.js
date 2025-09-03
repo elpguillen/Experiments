@@ -26,6 +26,36 @@ function init() {
 
 function placeMines(row,col) {
 
+    const forbidden = new Set();
+    for(let r=firstRow-1;r<=firstRow+1;r++){
+      for(let c=firstCol-1;c<=firstCol+1;c++){
+        if(r>=0 && r<rows && c>=0 && c<cols) forbidden.add(r+','+c);
+      }
+    }
+
+    let toPlace = mines;
+
+    while(toPlace>0){
+      const r = Math.floor(Math.random()*rows);
+      const c = Math.floor(Math.random()*cols);
+      const key = r+','+c;
+      if(forbidden.has(key)) continue;
+      if(grid[r][c].mine) continue;
+      grid[r][c].mine = true; toPlace--;
+    }
+    
+    for(let r=0;r<rows;r++){
+      for(let c=0;c<cols;c++){
+        if(grid[r][c].mine){grid[r][c].adj=-1; continue}
+        let count=0;
+        for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){
+          if(dr===0 && dc===0) continue;
+          const nr=r+dr, nc=c+dc;
+          if(nr>=0 && nr<rows && nc>=0 && nc<cols && grid[nr][nc].mine) count++;
+        }
+        grid[r][c].adj = count;
+      }
+    }
 }
 
 function render() {
