@@ -15,13 +15,16 @@ let flagsPlaced = 0;
 let flagMode = false;
 
 function init() {
-    // get number rows
-    // get number of cols
-    // get number of mines
+
+    rows = parseInt(rowsInput.value, 10) || 9;
+    cols = parseInt(colsInput.value, 10) || 9;
+    mines = parseInt(minesInput.value, 10) || 9;
 
     // create grid
+    grid = Array.from({length:rows},()=>Array.from({length:cols},()=>({mine:false,revealed:false,flagged:false,adj:0})));
     // initialize game stats/timer
     // render the grid on the page
+    started = false; seconds = 0; flagsPlaced = 0; updateTimer(); updateMinesLeft(); render();
 }
 
 function placeMines(row,col) {
@@ -43,7 +46,7 @@ function placeMines(row,col) {
       if(grid[r][c].mine) continue;
       grid[r][c].mine = true; toPlace--;
     }
-    
+
     for(let r=0;r<rows;r++){
       for(let c=0;c<cols;c++){
         if(grid[r][c].mine){grid[r][c].adj=-1; continue}
