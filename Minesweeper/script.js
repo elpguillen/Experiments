@@ -89,6 +89,14 @@ function onTileClick(row, col) {
 
 }
 
+function toggleFlag(r,c){
+    const cell = grid[r][c]; if(cell.revealed) return;
+    cell.flagged = !cell.flagged; flagsPlaced += cell.flagged?1:-1; 
+    updateMinesLeft(); 
+    render();
+    checkWin();
+}
+
 function revealAllMines() {
     for(let r=0;r<rows;r++)
         for(let c=0;c<cols;c++) 
