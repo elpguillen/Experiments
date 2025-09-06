@@ -89,6 +89,21 @@ function onTileClick(row, col) {
 
 }
 
+/**
+ * Toggles a flag on a cell in the Minesweeper grid.
+ *
+ * @param {number} r - Row index of the cell to toggle.
+ * @param {number} c - Column index of the cell to toggle.
+ *
+ * Behavior:
+ * - If the cell is already revealed, do nothing (can't flag revealed cells).
+ * - Otherwise, flip the flagged state (flag/unflag).
+ * - Update the global counter of placed flags.
+ * - Refresh the display of remaining mines.
+ * - Re-render the game board.
+ * - Check if the win condition has been achieved.
+ */
+
 function toggleFlag(r,c){
     const cell = grid[r][c]; if(cell.revealed) return;
     cell.flagged = !cell.flagged; flagsPlaced += cell.flagged?1:-1; 
