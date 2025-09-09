@@ -161,3 +161,5 @@ function updateTimer() {
 function updateMinesLeft() { 
     minesLeftEl.textContent = Math.max(0, mines - flagsPlaced); 
 }
+
+init();
