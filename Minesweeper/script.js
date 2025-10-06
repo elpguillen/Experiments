@@ -6,7 +6,6 @@ const startBtn = document.getElementById('startBtn');
 const minesLeftEl = document.getElementById('minesLeft');
 const timerEl = document.getElementById('timer');
 const flagModeBtn = document.getElementById('flagModeBtn');
-
 let rows = 9, cols = 9, mines = 10;
 let grid = []; // {mine:boolean, revealed:boolean, flagged:boolean, adj:number}
 let started = false;
@@ -14,21 +13,23 @@ let timer = null; let seconds = 0;
 let flagsPlaced = 0;
 let flagMode = false;
 
-function init() {
+function clampMineCount(){
+  const max = Math.max(1, Math.floor(rows*cols - 1));
+  if(mines > max) mines = max;
+  minesInput.max = max;
+  minesInput.value = mines;
+}
 
-    rows = parseInt(rowsInput.value, 10) || 9;
-    cols = parseInt(colsInput.value, 10) || 9;
-    mines = parseInt(minesInput.value, 10) || 9;
-
-    // create grid
-    grid = Array.from({length:rows},()=>Array.from({length:cols},()=>({mine:false,revealed:false,flagged:false,adj:0})));
-    // initialize game stats/timer
-    // render the grid on the page
+function init(){
+    rows = parseInt(rowsInput.value,10) || 9;
+    cols = parseInt(colsInput.value,10) || 9;
+    mines = parseInt(minesInput.value,10) || 10;
+    clampMineCount();
+    grid = Array.from({length:rows},()=>Array.from({length:cols},()=>({mine:false,revealed:false,flagged:false,adj:0})))
     started = false; seconds = 0; flagsPlaced = 0; updateTimer(); updateMinesLeft(); render();
 }
 
-function placeMines(row,col) {
-
+function placeMines(firstRow, firstCol){
     const forbidden = new Set();
     for(let r=firstRow-1;r<=firstRow+1;r++){
       for(let c=firstCol-1;c<=firstCol+1;c++){
@@ -37,7 +38,6 @@ function placeMines(row,col) {
     }
 
     let toPlace = mines;
-
     while(toPlace>0){
       const r = Math.floor(Math.random()*rows);
       const c = Math.floor(Math.random()*cols);
@@ -46,7 +46,6 @@ function placeMines(row,col) {
       if(grid[r][c].mine) continue;
       grid[r][c].mine = true; toPlace--;
     }
-
     for(let r=0;r<rows;r++){
       for(let c=0;c<cols;c++){
         if(grid[r][c].mine){grid[r][c].adj=-1; continue}
@@ -61,7 +60,7 @@ function placeMines(row,col) {
     }
 }
 
-function render() {
+function render(){
     boardEl.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
     boardEl.innerHTML = '';
     for(let r=0;r<rows;r++){
@@ -85,42 +84,53 @@ function render() {
     }
 }
 
-function onTileClick(row, col) {
-
+function colorForNumber(n){
+    const map = {1:'#2563eb',2:'#16a34a',3:'#dc2626',4:'#7c3aed',5:'#b45309',6:'#0891b2',7:'#374151',8:'#111827'};
+    return map[n] || '#000';
 }
 
-/**
- * Toggles a flag on a cell in the Minesweeper grid.
- *
- * @param {number} r - Row index of the cell to toggle.
- * @param {number} c - Column index of the cell to toggle.
- *
- * Behavior:
- * - If the cell is already revealed, do nothing (can't flag revealed cells).
- * - Otherwise, flip the flagged state (flag/unflag).
- * - Update the global counter of placed flags.
- * - Refresh the display of remaining mines.
- * - Re-render the game board.
- * - Check if the win condition has been achieved.
- */
+function onTileClick(r,c){
+    if(!started){ placeMines(r,c); started=true; startTimer(); }
+    if(flagMode){ toggleFlag(r,c); return; }
+    const cell = grid[r][c];
+    if(cell.revealed || cell.flagged) return;
+    if(cell.mine){ revealAllMines(); gameOver(false); return; }
+    floodReveal(r,c);
+    render(); checkWin();
+}
+
+function onTileRightClick(r,c){
+    toggleFlag(r,c);
+}
 
 function toggleFlag(r,c){
     const cell = grid[r][c]; if(cell.revealed) return;
-    cell.flagged = !cell.flagged; flagsPlaced += cell.flagged?1:-1; 
-    updateMinesLeft(); 
-    render();
+    cell.flagged = !cell.flagged; flagsPlaced += cell.flagged?1:-1; updateMinesLeft(); render();
     checkWin();
 }
 
-function revealAllMines() {
-    for(let r=0;r<rows;r++)
-        for(let c=0;c<cols;c++) 
-            if(grid[r][c].mine) 
-                grid[r][c].revealed = true;
+function floodReveal(r,c){
+    const stack = [[r,c]];
+    while(stack.length){
+      const [x,y] = stack.pop();
+      const cell = grid[x][y];
+      if(cell.revealed || cell.flagged) continue;
+      cell.revealed = true;
+      if(cell.adj===0){
+        for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){
+          const nx = x+dr, ny = y+dc;
+          if(nx>=0 && nx<rows && ny>=0 && ny<cols && !grid[nx][ny].revealed && !grid[nx][ny].mine){ stack.push([nx,ny]); }
+        }
+      }
+    }
+}
+
+function revealAllMines(){
+    for(let r=0;r<rows;r++)for(let c=0;c<cols;c++) if(grid[r][c].mine) grid[r][c].revealed = true;
     render();
 }
 
-function checkWin() {
+function checkWin(){
     let unrevealed=0;
     for(let r=0;r<rows;r++){
       for(let c=0;c<cols;c++){
@@ -133,10 +143,9 @@ function checkWin() {
     }
 }
 
-function gameOver(won) {
+function gameOver(won){
     stopTimer();
     started=false;
-
     if(won){
       setTimeout(()=> alert('You win! Time: '+seconds+'s'),10);
     } else {
@@ -144,22 +153,36 @@ function gameOver(won) {
     }
 }
 
-function startTimer() {
+function startTimer(){
     stopTimer(); 
     seconds=0; 
     updateTimer(); 
-    timer = setInterval(()=>{ seconds++; updateTimer(); },1000);
+    timer = setInterval ( ()=> { 
+      seconds++; 
+      updateTimer(); 
+    },1000);
 }
 
 function stopTimer() { 
-    if(timer) clearInterval(timer); timer = null; 
+  if(timer) clearInterval(timer); 
+  timer = null; 
 }
+
 function updateTimer() { 
-    timerEl.textContent = seconds + 's'; 
+  timerEl.textContent = seconds + 's'; 
 }
 
-function updateMinesLeft() { 
-    minesLeftEl.textContent = Math.max(0, mines - flagsPlaced); 
+function updateMinesLeft() {
+   minesLeftEl.textContent = Math.max(0, mines - flagsPlaced); 
 }
 
-init();
+startBtn.addEventListener('click', ()=>{ init(); });
+flagModeBtn.addEventListener('click', ()=>{ flagMode = !flagMode; flagModeBtn.textContent = 'Flag mode: '+(flagMode? 'On':'Off'); flagModeBtn.style.opacity = flagMode? '0.95':'1'; });
+minesInput.addEventListener('change', ()=>{ mines = parseInt(minesInput.value,10) || 1; clampMineCount(); updateMinesLeft(); });
+rowsInput.addEventListener('change', ()=>{ rows = parseInt(rowsInput.value,10) || 9; clampMineCount(); init(); });
+colsInput.addEventListener('change', ()=>{ cols = parseInt(colsInput.value,10) || 9; clampMineCount(); init(); });
+
+window.addEventListener('keydown', (e)=>{ if(e.code==='Space'){ e.preventDefault(); flagMode = !flagMode; flagModeBtn.textContent = 'Flag mode: '+(flagMode? 'On':'Off'); } });
+
+
+init()
