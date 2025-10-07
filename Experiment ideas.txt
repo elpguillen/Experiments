@@ -1,0 +1,5 @@
+Experiment ideas:
+
+1. Update/Clean Up Minecraft game
+2. Portfolio Website
+3. Start brainstorming ideas for a system that registers timestamps.
